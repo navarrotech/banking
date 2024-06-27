@@ -1,0 +1,88 @@
+// Copyright © 2024 Navarrotech
+@use "./theme.sass" as *;
+
+$family-titles: "Righteous", sans-serif;
+$family-primary: "Chocolate Classical Sans", sans-serif;
+
+@use "bulma/sass" with (
+  $family-primary: $family-primary,
+  $primary: $primary,
+//   $link: $link,
+  $title-family: $family-titles,
+//   $text: white,
+//   $box-color: white,
+//   $body-color: white,
+//   $label-color: white,
+//   $strong-color: white,
+//   $title-color: white,
+  $input-shadow: none
+);
+
+// Navarrotech
+@import "./NavarroTech/derived-variables.sass";
+@import "./NavarroTech/Addons/_all.sass";
+@import "./NavarroTech/Components/_all.sass";
+@import "./NavarroTech/Elements/_all.sass";
+
+// Bulma extensions
+@import "bulma-divider";
+
+.button {
+  &.is-primary {
+    color: white;
+  }
+  &.is-google {
+    background: $google;
+    color: white;
+    font-weight: 500;
+    border: none;
+    margin-top: 1em;
+    min-height: 3.4rem;
+    position: relative;
+
+    .icon {
+      position: absolute;
+      top: 0.22em;
+      left: 0.7em;
+      height: 3rem;
+      width: 3rem;
+      background: white;
+      border-radius: 5px;
+
+      img {
+        width: 2rem !important;
+      }
+    }
+  }
+}
+
+.dropdown-content {
+  .dropdown-wrapper {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+.useTitleFont{
+    font-family: $family-titles;
+}
+
+.block:not(:last-child){
+    margin-bottom: 1.5rem;
+}
+
+.field:not(:last-child){
+    margin-bottom: 0.75rem;
+}
+
+.modal-content.is-fluid {
+  max-width: 90vw !important;
+  width: fit-content !important;
+  max-height: 90vh !important;
+  height: 90vh !important;
+
+  > * {
+    height: 100% !important;
+    width: 100% !important;
+  }
+}

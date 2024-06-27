@@ -1,0 +1,15 @@
+@use 'sass:color'
+    
+.button
+    @each $name, $pair in $colors
+        $color: nth($pair, 1)
+        $color-invert: nth($pair, 2)
+        &.is-#{$name}-hover
+            background: inherit
+            border-color: inherit
+
+            .icon
+                color: $color-invert
+                
+            &:hover
+                background: color.scale($color, $lightness: 10%)

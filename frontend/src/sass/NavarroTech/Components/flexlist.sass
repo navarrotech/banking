@@ -1,0 +1,32 @@
+@use 'sass:math'
+    
+.flexlist
+    display: flex
+    flex-flow: row wrap
+    align-items: flex-start
+
+    &.is-centered
+        justify-content: center
+
+    &.is-right
+        justify-content: flex-end
+
+    &.is-compact
+        gap: 0.5em
+
+        @for $i from 2 through 12
+            &.has-#{$i}-per-row > .item
+                width: calc(math.div(100%, $i) - 0.5em)
+                
+    &:not(.is-compact)
+        gap: 1em
+
+        @for $i from 2 through 12
+            &.has-#{$i}-per-row > .item
+                width: calc(math.div(100%, $i) - 1em)
+
+    .item
+        min-height: 2.5em
+
+        &.is-rounded
+            border-radius: 6px

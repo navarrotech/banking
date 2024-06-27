@@ -1,0 +1,150 @@
+// Copyright © 2024 Navarrotech
+@use '@/sass/theme.sass' as *
+@use "sass:color"
+    
+@keyframes progressbarEmpty
+    from
+        margin-left: 0%
+        transform: translateX(-100%)
+    to
+        margin-left: 100%
+        transform: translateX(0%)
+
+$multiProgressbarHeight: 2em !default
+$multiProgressbarBackground: #f3f3f7 !default
+
+// .multi-progress
+//     display: flex
+//     justify-content: flex-start
+//     height: 2.5em
+//     width: 100%
+//     border-radius: 8px
+//     overflow: hidden
+//     background: #EDEDED
+
+//     &.is-rounded
+//         border-radius: 99999px
+
+//     &.is-small
+//         height: 1.8em
+
+//     &.is-medium
+//         height: 3em
+
+//     &.is-large
+//         height: 4em
+
+//     &.is-massive
+//         height: 5em
+
+//     .progress-item
+//         position: relative
+//         display: flex
+//         align-items: center
+//         justify-content: center
+//         height: 100%
+//         color: white
+//         text-align: center
+//         padding: 0 1em
+//         gap: 0.5em
+        
+//         @each $name, $pair in $colors
+//             $color: nth($pair, 1)
+//             $color-invert: nth($pair, 2)
+
+//             &.is-#{$name}
+//                 background: $color
+
+.multi-progress
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    flex-direction: row
+    position: relative
+    width: 100%
+    height: $multiProgressbarHeight
+    min-height: $multiProgressbarHeight
+    border-radius: 12px
+    overflow: hidden
+    vertical-align: top
+    line-height: 5px
+    background: $multiProgressbarBackground
+
+    &:not(.no-animation):empty::before
+        content: ' '
+        display: block
+        height: $multiProgressbarHeight
+        width: 33%
+        min-width: 100px
+        background: $primary
+        animation: 1500ms ease progressbarEmpty infinite
+        
+    .progress-item
+        position: relative
+        display: flex
+        min-height: $multiProgressbarHeight
+        overflow: hidden
+
+        // Overriding jquery "progressbar" element
+        -webkit-animation: none !important
+        animation: none !important
+
+        align-items: center
+        justify-content: center
+
+        height: 100%
+        color: white
+        text-align: center
+        padding: 0 1em
+        gap: 0.5em
+
+        &.is-animating
+            display: block !important
+            padding: 0 !important
+            *
+                display: none !important
+            
+            &::after
+                content: ' '
+                display: block
+                height: $multiProgressbarHeight
+                width: 33%
+                min-width: 100px
+                background: rgba(255,255,255,0.4)
+                animation: 1300ms ease progressbarEmpty infinite
+
+        @each $name, $pair in $colors
+            $color: nth($pair, 1)
+
+            &.is-#{$name}
+                background: $color
+                &.is-animating::after
+                    background: color.scale($color, $lightness: 60%)
+
+    &.is-small
+        min-height: 1em
+        height: 1em
+
+    &.is-normal
+        min-height: 2em
+        height: 2em
+
+    &.is-medium
+        min-height: 3em
+        height: 3em
+
+    &.is-large
+        min-height: 4em
+        height: 4em
+
+    &.is-massive
+        min-height: 5em
+        height: 5em
+
+    @each $name, $pair in $colors
+        $color: nth($pair, 1)
+
+        &.are-#{$name} .progress-item
+            background: $color
+            &::before
+                background: $color

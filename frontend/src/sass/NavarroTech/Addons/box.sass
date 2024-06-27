@@ -1,0 +1,30 @@
+
+
+.box
+    @each $name, $pair in $colors
+        $color: nth($pair, 1)
+        &.is-#{$name}
+            box-shadow: none!important
+            border:1px solid $color
+            &.is-dashed
+                border: 2px dashed $color
+            &.is-outlined
+                border: 2px solid $color
+            &:not(.is-dashed):not(.is-outlined)
+                background: $color
+
+    &.is-centered
+        width: fit-content
+        margin-left: auto
+        margin-right: auto
+
+    &.is-left
+        width: fit-content
+        margin-right: auto
+
+    &.is-right
+        width: fit-content
+        margin-left: auto
+
+    &.is-dashed
+        border-style: dashed

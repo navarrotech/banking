@@ -1,0 +1,13 @@
+
+.icon
+    @each $name, $pair in $colors
+        $color: nth($pair, 1)
+        $color-invert: nth($pair, 2)
+        
+        &.is-#{$name}:not(:hover)
+            svg
+                fill: $color
+
+        &.is-#{$name}-hover:hover
+            svg
+                fill: $color

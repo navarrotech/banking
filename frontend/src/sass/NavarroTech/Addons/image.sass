@@ -1,0 +1,37 @@
+
+.image
+    &.not-forced
+
+        img
+            width: auto
+            margin-left: auto
+            margin-right: auto
+            height: 100%
+
+    &.is-round,
+    &.is-rounded
+        img
+            border-radius: 50000px
+
+    &.is-centered
+        margin-left: auto
+        margin-right: auto
+
+    &.is-right
+        margin-left: auto
+
+    &.is-256x256
+        width: 256px
+        height: 256px
+
+    &.no-image
+        display: flex
+        align-items: center
+        justify-content: center
+        background: $primary
+        border-radius: 50%
+
+        > *
+            font-size: 1.55rem
+            color: white
+            font-weight: 800

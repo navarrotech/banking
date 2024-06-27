@@ -1,0 +1,46 @@
+// Copyright © 2024 Navarrotech
+@use '@/sass/theme.sass' as *
+@use 'sass:math'
+
+$subcontainer-max: $tablet !default
+$subcontainer-divide: 6
+$subcontainer-large:  calc(math.div($subcontainer-max, $subcontainer-divide) * 5) !default
+$subcontainer-medium: calc(math.div($subcontainer-max, $subcontainer-divide) * 4) !default
+$subcontainer-small:  calc(math.div($subcontainer-max, $subcontainer-divide) * 3) !default
+
+.subcontainer
+    display: block
+    margin-left: auto
+    margin-right: auto
+    max-width: $desktop
+    width: 100%
+
+    // Standard Bulma Sizes
+    &.is-fullhd
+        max-width: $fullhd
+
+    &.is-widescreen
+        max-width: $widescreen
+
+    &.is-desktop
+        max-width: $desktop
+
+    &.is-tablet
+        max-width: $tablet
+
+    // Sub sizes
+    &.is-large
+        max-width: $subcontainer-large
+
+    &.is-medium
+        max-width: $subcontainer-medium
+
+    &.is-small
+        max-width: $subcontainer-small
+
+    &.is-mini
+        max-width: 400px
+
+    &.is-fullwidth,
+    &.is-expanded
+        max-width: unset

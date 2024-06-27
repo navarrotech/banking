@@ -1,0 +1,26 @@
+.toast
+    position: fixed
+    max-width: 450px
+    width: 100%
+    height: fit-content
+    z-index: 38
+    left: 0
+    right: 0
+    margin: auto
+
+    > .notification
+        padding: 0.75rem 1.5rem
+
+    &.is-top
+        top: 120px
+
+    &:not(.is-top)
+        bottom: 120px
+    
+    &.is-left
+        left: 120px
+        right: unset
+
+    &.is-right
+        left: unset
+        right: 120px

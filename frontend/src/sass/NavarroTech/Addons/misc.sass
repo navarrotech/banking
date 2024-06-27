@@ -1,0 +1,22 @@
+.transition
+    transition: all 300ms ease
+    
+.field,
+.block,
+.level,
+.box,
+.level-item
+    &.is-fullwidth
+        width: 100%
+    
+.level.has-gap,
+.level-item.has-gap
+    gap: 10px
+
+@media (max-width: $tablet)
+    .level,
+    .level-item
+
+        &.is-centered-mobile,
+        .is-centered-mobile
+            justify-content: center !important
