@@ -5,7 +5,7 @@ import { dispatch } from "@/store";
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: "http://localhost:2000",
+  baseURL: `${window.location.protocol}//${window.location.hostname}:2000`,
   headers: {
     "Content-Type": "application/json",
     "Authorization": "Bearer " + localStorage.getItem("token"),

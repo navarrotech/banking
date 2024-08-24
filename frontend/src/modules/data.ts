@@ -75,7 +75,7 @@ const slice = createSlice({
       state.tagRules.list = state.tagRules.list.filter(t => t.id !== action.payload.id)
       delete state.tagRules.byId[action.payload.id]
     },
-  
+
     setTags(state, action: PayloadAction<Tag[]>) {
       state.tags.list = action.payload
       state.tags.byId = action.payload.reduce((acc, tag) => {
@@ -96,7 +96,7 @@ const slice = createSlice({
       state.tags.list = state.tags.list.filter(t => t.id !== action.payload.id)
       delete state.tags.byId[action.payload.id]
     },
-  
+
     setTagInventory(state, action: PayloadAction<TagInventory[]>) {
       state.tagInventory.list = action.payload
       state.tagInventory.byId = action.payload.reduce((acc, tag) => {
@@ -122,7 +122,7 @@ const slice = createSlice({
       state.startDate = action.payload.startDate
       state.endDate = action.payload.endDate
     },
-  
+
     reset() {
       return initialState
     }

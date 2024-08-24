@@ -390,8 +390,20 @@ function EditTransaction({ transaction, close }: EditTransactionProps) {
         </div>
         <label className="label">Manually added tags</label>
         <div className="field">
-          { manualTags.length ? <Tags tags={manualTags} onDoubleClick={(tag) => {
-            console.log("implement me!", tag)
+          { manualTags.length ? <Tags tags={manualTags} onDoubleClick={async (tag) => {
+            const result = await api.delete(`/tags?id=${tag.id}`)
+            if (result.status === 200) {
+              setState({
+                ...state,
+                tags: state.tags.filter(t => t.id !== tag.id)
+              })
+              dispatch(
+                dataActions.updateTransaction({
+                  ...state,
+                  tags: state.tags.filter(t => t.id !== tag.id)
+                })
+              )
+            }
           }}/> : <p>No manual tags</p> }
         </div>
         <label className="label">Add new tag</label>

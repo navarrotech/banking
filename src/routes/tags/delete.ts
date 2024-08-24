@@ -8,7 +8,7 @@ type Body = {
 }
 
 export default async function routes(request: Request, response: Response) {
-  const { id } = request.body as Body
+  const { id } = request.query as Body
 
   const result = await database.tags.delete({
     where: {

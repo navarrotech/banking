@@ -121,7 +121,7 @@ export default function YearToDate() {
   for (const spendingTag of spendPerMonthKeys) {
     const isExpanded = expanded.includes(spendingTag)
 
-    const widget = <div className="block box" key={spendingTag} style={{ height: '500px' }}>
+    const widget = <div className="block box" key={spendingTag} style={{ height: isExpanded ? '' : '500px' }}>
       <div className="level">
         <strong className="is-size-5">{ spendingTag }{' '}</strong>
         <div className="block buttons is-right are-small">

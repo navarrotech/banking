@@ -123,6 +123,16 @@ export default function SpendingCharts(){
     unpaidUpcomingBillsCount = 0
   }
 
+  // Small offset for mortgage stuff :/
+  // TODO: Probably do this better
+  const mortgageInventory = inventoryList.find(tag => tag.name.includes("Mortgage"))
+  const mortgagePayments = transactions.filter(transaction => transaction.tags?.find(tag => tag.inventory_id === mortgageInventory?.id))
+  const remainingMortgagePayments = (mortgageInventory?.amount || 0) + mortgagePayments.reduce((acc, transaction) => acc + transaction.amount, 0)
+
+  if (remainingMortgagePayments > 0) {
+    unpaidUpcomingBillsCount += remainingMortgagePayments
+  }
+
   const highestIncome = income.sort((a, b) => b.amount - a.amount)?.[0]?.amount || 0
   const payrollCheck = income
     .findLast(transaction => transaction.description.includes("payroll")) 
@@ -147,11 +157,11 @@ export default function SpendingCharts(){
       </div>
       <div className="block">
         <div className="level">
-          <span>Income</span>
+          <span>Income so far</span>
           <span className="has-text-success">{"$" + totalIncome.toFixed(2)}</span>
         </div>
         <div className="level">
-          <span>Spending</span>
+          <span>Spend so far</span>
           <span className="has-text-danger">{"$" + totalSpend.toFixed(2)}</span>
         </div>
         <hr style={{ margin: '0.75rem 0 0.2rem 0' }}/>
@@ -160,10 +170,16 @@ export default function SpendingCharts(){
           <strong className={`has-text-${leftover > 0 ? 'success' : 'danger'}`}>{"$" + leftover.toFixed(2)}</strong>
         </div>
         <div className="level mt-4">
-          <span>Bills remaining</span>
+          <strong>Upcoming unpaid bills</strong>
           <strong>${ unpaidUpcomingBillsCount.toFixed(2) }</strong>
         </div>
-        <div className="ml-4">{
+        <div className="ml-4">
+        { remainingMortgagePayments > 0 && <div key='remaining-mortgage' className="level">
+            <span>Remaining Mortgage</span>
+            <span>$-{ remainingMortgagePayments }</span>
+          </div>
+        }
+        {
           unpaidUpcomingBillsEntires.map(([key, value]) => 
             <div key={key} className="level">
               <span>{ inventoryById[key].name }</span>

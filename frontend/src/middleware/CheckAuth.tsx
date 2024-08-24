@@ -37,12 +37,12 @@ export default function CheckAuth({ children }: Props) {
     testAuth(false)
   }, [])
 
-  if (!loaded) {
-    return <h1>Loading...</h1>
-  }
-
   if (cantConnect) {
     return <h1>Cannot connect to server</h1>
+  }
+
+  if (!loaded) {
+    return <h1>Loading...</h1>
   }
 
   if (!authorized) {

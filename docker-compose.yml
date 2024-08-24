@@ -2,28 +2,28 @@
 # For production, the docker-compose.prod.yml will be defined in portainer.io
 
 services:
-  api:
-    build:
-      context: ./api
-      dockerfile: ./Dockerfile
-    container_name: banking-v7-api
-    restart: unless-stopped
-    environment:
-      DOMAIN: localhost
-      NODE_ENV: development
-      DATABASE_URL: postgres://postgres:postgres@banking-v7-postgres:5432/postgres
-      API_PORT: 80
-    depends_on:
-      - database
-    volumes:
-      - type: bind
-        source: "./api"
-        target: "/app"
-    command: yarn run dev
-    ports:
-      - 3000:80
-    networks:
-      - default
+  # api:
+  #   build:
+  #     context: ./api
+  #     dockerfile: ./Dockerfile
+  #   container_name: banking-v7-api
+  #   restart: unless-stopped
+  #   environment:
+  #     DOMAIN: localhost
+  #     NODE_ENV: development
+  #     DATABASE_URL: postgres://postgres:postgres@banking-v7-postgres:5432/postgres
+  #     API_PORT: 80
+  #   depends_on:
+  #     - database
+  #   volumes:
+  #     - type: bind
+  #       source: "./api"
+  #       target: "/app"
+  #   command: yarn run dev
+  #   ports:
+  #     - 3000:80
+  #   networks:
+  #     - default
 
   database:
     image: postgres:16.1-bullseye

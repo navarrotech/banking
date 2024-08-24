@@ -58,5 +58,7 @@ export function Tag({ tag, ...rest }: TagProps) {
     short={tagInventory.short_name}
     name={tagInventory.name}
     { ...rest }
+    // @ts-ignore
+    onDoubleClick={() => rest.onDoubleClick?.(tag)}
   />
 }
