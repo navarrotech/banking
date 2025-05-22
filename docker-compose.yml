@@ -2,67 +2,72 @@
 # For production, the docker-compose.prod.yml will be defined in portainer.io
 
 services:
-  # api:
-  #   build:
-  #     context: ./api
-  #     dockerfile: ./Dockerfile
-  #   container_name: banking-v7-api
-  #   restart: unless-stopped
-  #   environment:
-  #     DOMAIN: localhost
-  #     NODE_ENV: development
-  #     DATABASE_URL: postgres://postgres:postgres@banking-v7-postgres:5432/postgres
-  #     API_PORT: 80
-  #   depends_on:
-  #     - database
-  #   volumes:
-  #     - type: bind
-  #       source: "./api"
-  #       target: "/app"
-  #   command: yarn run dev
-  #   ports:
-  #     - 3000:80
-  #   networks:
-  #     - default
-
-  database:
-    image: postgres:16.1-bullseye
-    container_name: banking-v7-postgres
-    restart: unless-stopped
-    user: postgres
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    ports:
-      - 5433:5432
-    networks:
-      - default
-
-  # Postgres web-based database tool, development only
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: banking-v7-pgadmin
+  api:
+    build:
+      context: ./api
+    command: yarn run dev
+    container_name: banking-api
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@navarrotech.net
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
-    ports:
-      - 5051:80
-    networks:
-      - default
+      NODE_ENV: production
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
+      ACCESS_PASSWORD: ${ACCESS_PASSWORD}
+      DOMAIN: ${DOMAIN}
+      PORT: ${PORT}
+      PLAID_CLIENT_ID: ${PLAID_CLIENT_ID}
+      PLAID_SECRET: ${PLAID_SECRET}
+      PLAID_AMEX_ACCESS_TOKEN: ${PLAID_AMEX_ACCESS_TOKEN}
+      PLAID_ICCU_ACCESS_TOKEN: ${PLAID_ICCU_ACCESS_TOKEN}
     depends_on:
       - database
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - ./api/src:/app/src
+      - ./api/package.json:/app/package.json
+      - ./api/prisma:/app/prisma
+      - ./api/logs:/app/logs
+    ports:
+      - 3000:3000
+    networks:
+      - banking
+
+  database:
+    image: postgres:17
+    container_name: banking_postgres
+    restart: unless-stopped
+    user: postgres
+    volumes:
+      - banking-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: postgres
+    networks:
+      - banking
+  # Postgres web-based database tool, development only
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: banking-v7-pgadmin
+  #   restart: unless-stopped
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@navarrotech.net
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #     PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+  #   ports:
+  #     - 5051:80
+  #   networks:
+  #     - default
+  #   depends_on:
+  #     - database
+  #   volumes:
+  #     - banking-pgadmin:/var/lib/pgadmin
 
 volumes:
-  postgres-data:
-  pgadmin-data:
- 
+  banking-data:
+  banking-pgadmin:
+
+
 networks:
-  default:
+  banking:

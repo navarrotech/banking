@@ -1,6 +1,6 @@
 // Copyright © 2024 Navarrotech
 
-import type { tags } from "../../../node_modules/@prisma/client"
+import type { tags } from "@prisma/client"
 
 import { useMemo } from "react"
 import { useSelector } from "@/store"
@@ -13,7 +13,7 @@ type ManualTagProps = {
 }
 
 export function ManualTag({ name, color, short, ...rest }: ManualTagProps) {
-  const fontColor = useMemo(() => fontColorContrast(color, 0.5), [ color ])
+  const fontColor = useMemo(() => fontColorContrast(color, 0.5), [color])
 
   return <span
     className="tag"
@@ -22,13 +22,13 @@ export function ManualTag({ name, color, short, ...rest }: ManualTagProps) {
       color: fontColor,
       backgroundColor: color
     }}
-    { ...rest }
+    {...rest}
   >{
-    short
-  }</span>
+      short
+    }</span>
 }
 
-export function ManualTags({ tags }:{ tags: ManualTagProps[] }) {
+export function ManualTags({ tags }: { tags: ManualTagProps[] }) {
   return <div className="tags">{
     tags.map(tag => <ManualTag key={tag.short} {...tag} />)
   }</div>
@@ -57,7 +57,7 @@ export function Tag({ tag, ...rest }: TagProps) {
     color={tagInventory.color}
     short={tagInventory.short_name}
     name={tagInventory.name}
-    { ...rest }
+    {...rest}
     // @ts-ignore
     onDoubleClick={() => rest.onDoubleClick?.(tag)}
   />

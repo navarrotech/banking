@@ -1,6 +1,6 @@
 // Copyright © 2024 Navarrotech
 
-import type { tags, tag_inventory, auto_tag_rule, transaction } from "../../node_modules/@prisma/client"
+import type { tags, tag_inventory, auto_tag_rule, transaction } from "@prisma/client"
 
 export type Transaction = transaction & {
   tags: tags[]
