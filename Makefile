@@ -14,13 +14,6 @@ reset:
 	yarn install
 	cd api && yarn install
 
-purge: clean
-	@docker compose down
-
-install:
-	yarn global add prisma
-	npm --global install prisma
-
 certs:
 	@# You should plan to run this in bash!
 	@cd api && openssl req -x509 -newkey rsa:4096 -days 365 \
@@ -29,7 +22,9 @@ certs:
 		-out localhost.pem \
 		-subj "/CN=localhost"
 
-setup:
+setup: certs
+	yarn global add prisma
+	npm --global install prisma
 	cd api && \
 		yarn install && \
 		yarn prisma generate

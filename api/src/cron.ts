@@ -15,9 +15,11 @@ const latestTransactionsLog = '/app/logs/transactions.log'
 CronJob.from({
   cronTime: '0 0 * * *',
   onTick: async function everyMorning() {
-    for (const accessToken of accessTokens) {
+    for (const institution of accessTokens) {
       const startDate = moment().subtract(1, 'year').format('YYYY-MM-DD')
       const endDate = moment().format('YYYY-MM-DD')
+
+      const accessToken = institution.token
 
       try {
         const [accountsRequest, transactionsRequest] = await Promise.all([
@@ -46,7 +48,7 @@ CronJob.from({
           { flag: 'w' }
         )
 
-        console.log('[CRON] Accounts and transactions fetched successfully')
+        console.log(`[CRON] Accounts and transactions fetched successfully for ${institution.name}`)
 
         const addAccounts = await prisma.account.createMany({
           data: accounts.map(transmuteAccount),
@@ -58,9 +60,9 @@ CronJob.from({
           skipDuplicates: true
         })
 
-        console.log('[CRON] Accounts and transactions saved to database')
+        console.log(`[CRON] Accounts and transactions saved to database for ${institution.name}`)
 
-        prisma.plaid_logs.create({
+        await prisma.plaid_logs.create({
           data: {
             accounts_fetched: accounts.length,
             transactions_fetched: transactions.length,
@@ -70,9 +72,9 @@ CronJob.from({
       }
       catch (error) {
         console.error('[CRON] Error fetching transactions:', error)
-        prisma.plaid_logs.create({
+        await prisma.plaid_logs.create({
           data: {
-            error: JSON.stringify(error),
+            error: institution.name + ' failed: ' + JSON.stringify(error),
           }
         })
       }

@@ -1,9 +1,13 @@
 
+// Core
 import { prisma } from './lib/database'
+import multer from 'multer'
+
+// Types
 import type { Express } from "express"
 
 // Routes
-import multer from 'multer'
+import { requireAuth } from './middleware/auth'
 import { getAccessTokenRoute } from './routes/getAccessTokenRoute'
 import { plaidLinkCallback } from './routes/plaidLinkCallback'
 import { fromPublicToken } from './routes/fromPublicToken'
@@ -11,7 +15,8 @@ import { fromPublicToken } from './routes/fromPublicToken'
 const upload = multer()
 
 export function makeRoutes(app: Express) {
-  app.get('/', async function getRootRoute(request, response) {
+  app.use('/api', requireAuth)
+  app.get('/api/data', async function getRootRoute(request, response) {
     const start_date = request.query.start_date
     const end_date = request.query.end_date
 
@@ -33,10 +38,14 @@ export function makeRoutes(app: Express) {
       },
     })
 
-    response.json({
+    response.status(200).json({
       accounts,
       transactions
     })
+  })
+  app.get('/api/logs', async function getLogsRoute(request, response) {
+    const logs = await prisma.plaid_logs.findMany()
+    response.status(200).json(logs)
   })
 
   app.get('/access-token', getAccessTokenRoute)

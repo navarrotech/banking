@@ -4,8 +4,6 @@ import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 
-import { ACCESS_PASSWORD, NODE_ENV } from './env'
-
 import type { ServerOptions } from 'https'
 
 import fs from 'fs'
@@ -28,14 +26,6 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: false,
 }))
-app.use(function authMiddleware(request, response, next) {
-  if (request.headers.authorization !== `Bearer ${ACCESS_PASSWORD}` && NODE_ENV === 'production') {
-    response.status(401).send()
-  }
-  else {
-    next()
-  }
-})
 
 app.all('/ping', (request, response) => {
   response.status(200).send('pong')

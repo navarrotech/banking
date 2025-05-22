@@ -9,9 +9,10 @@ if (!PLAID_CLIENT_ID || !PLAID_SECRET) {
   process.exit(1)
 }
 
-export const accessTokens: string[] = [
-  process.env.PLAID_AMEX_ACCESS_TOKEN!,
-]
+export const accessTokens = [
+  { name: 'American Express', token: process.env.PLAID_AMEX_ACCESS_TOKEN! },
+  { name: 'ICCU', token: process.env.PLAID_ICCU_ACCESS_TOKEN! }
+] as const
 
 const config = new Configuration({
   basePath: IS_SANDBOX ? PlaidEnvironments.Sandbox : PlaidEnvironments.Production,
