@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model plaid_logs {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+
+  transactions_fetched Int @default(0)
+  transactions_added   Int @default(0)
+  accounts_fetched     Int @default(0)
+
+  error String? @default("")
+}
+
+model transaction {
+  // From Plaid:
+  id                 String   @id // Transaction ID
+  account_id         String
+  owner              String?  @default("")
+  amount             Float
+  authorized_date    DateTime
+  check_number       String?  @default("")
+  date               DateTime
+  currency_code      String?  @default("USD")
+  location           String?  @default("")
+  logo_url           String?  @default("")
+  merchant_entity_id String?  @default("")
+  merchant_name      String?  @default("")
+  name               String   @default("")
+  payment_channel    String?  @default("")
+  transaction_code   String?  @default("")
+  website            String?  @default("")
+
+  // From us:
+  preferred_name String  @default("")
+  hidden         Boolean @default(false)
+  notes          String  @default("")
+}
+
+model account {
+  // From Plaid:
+  id            String @id
+  name          String @default("")
+  official_name String @default("")
+  mask          String @default("")
+  subtype       String @default("")
+  type          String @default("")
+
+  // From us:
+  preferred_name     String               @default("")
+  hidden             Boolean              @default(false)
+  notes              String               @default("")
+  sort               Int                  @default(0)
+  predicted_income   predicted_income[]
+  predicted_expenses predicted_expenses[]
+}
+
+model predicted_income {
+  id         String    @id @default(uuid())
+  name       String
+  account_id String
+  account    account   @relation(fields: [account_id], references: [id])
+  amount     Float
+  start_date DateTime
+  end_date   DateTime?
+  notes      String?   @default("")
+}
+
+model predicted_expenses {
+  id         String    @id @default(uuid())
+  name       String
+  account_id String
+  account    account   @relation(fields: [account_id], references: [id])
+  amount     Float
+  start_date DateTime
+  end_date   DateTime?
+  notes      String?   @default("")
+}
+
+// model tags {
+//   id             String @id @default(uuid())
+
+//   inventory_id   String
+//   inventory      tag_inventory @relation(fields: [inventory_id], references: [id])
+
+//   transaction_id String
+//   transaction    transaction @relation(fields: [transaction_id], references: [id])
+
+//   auto_assigned  Boolean @default(false)
+
+//   notes          String @default("")
+// }
+
+// model tag_inventory {
+//   id          String @id @default(uuid())
+//   name        String
+//   short_name  String
+//   description String @default("")
+//   color       String
+
+//   amount      Float?
+//   start_date  DateTime?
+//   end_date    DateTime?
+//   due_date    Int?
+//   frequency   frequency @default(NONE)
+
+//   tags        tags[]
+//   rules       auto_tag_rule[]
+// }
+
+// model auto_tag_rule {
+//   id             String @id @default(uuid())
+
+//   inventory_id   String?
+//   tag            tag_inventory? @relation(fields: [inventory_id], references: [id])
+
+//   name           String
+//   description    String @default("")
+
+//   value          String
+//   condition      matching_rule
+// }
+
+// enum matching_rule {
+//   CONTAINS
+//   STARTS_WITH
+//   ENDS_WITH
+//   IS
+//   IS_NOT
+//   GREATER_THAN
+//   LESS_THAN
+//   GREATER_THAN_OR_EQUAL
+//   LESS_THAN_OR_EQUAL
+//   REGEX
+// }
+
+// enum frequency {
+//   NONE
+//   DAILY
+//   WEEKLY
+//   BIWEEKLY
+//   MONTHLY
+//   YEARLY
+// }
